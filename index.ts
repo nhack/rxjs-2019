@@ -8,9 +8,13 @@ const subscribe = (subscriber: Subscriber<IPizza>) => {
   for (let pizza of PIZZAS) {
     subscriber.next(pizza);
   }
+  subscriber.complete();
 }
 
 const pizzas$ = new Observable(subscribe);
 
 // register the subscriber on the observable
-pizzas$.subscribe(pizza => console.log(pizza.name));
+pizzas$.subscribe({
+  next: pizza => console.log(pizza.name),
+  complete: () => console.log('subscrption is completed')
+});
