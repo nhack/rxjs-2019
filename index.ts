@@ -12,8 +12,3 @@ const toTimeMap = map(toTime);
 toTimeMap(currentTime$).subscribe(time => console.log('Manual:' + time));
 currentTime$.map(toTime).subscribe(time => console.log('Chain:' + time));
 currentTime$.pipe(toTimeMap).subscribe(time => console.log('Pipe:' + time));
-
-
-
-
-
