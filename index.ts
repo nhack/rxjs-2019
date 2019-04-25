@@ -1,14 +1,19 @@
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import 'rxjs/add/operator/map';
-
+import { Observable, Subscription, fromEvent } from 'rxjs';
+import { map, filter, takeUntil } from 'rxjs/operators';
 const currentTime$: Observable<Date> = new Observable(subscriber => {
   setInterval(() => subscriber.next(new Date()), 1000);
 });
 
-const toTime = (date: Date) => date.getTime()
-const toTimeMap = map(toTime);
+const btn = document.getElementById('btn');
+const stop$ = fromEvent(btn, 'click');
 
-toTimeMap(currentTime$).subscribe(time => console.log('Manual:' + time));
-currentTime$.map(toTime).subscribe(time => console.log('Chain:' + time));
-currentTime$.pipe(toTimeMap).subscribe(time => console.log('Pipe:' + time));
+currentTime$
+  .pipe(
+    map(date => date.getTime()),
+    filter(time => time % 2 === 0),
+    takeUntil(stop$)
+  )
+  .subscribe({
+    next: time => console.log(time),
+    complete: () => console.log('DONE')
+  });
