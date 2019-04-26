@@ -7,12 +7,16 @@ const currentTime$: Observable<Date> = new Observable(subscriber => {
 const btn = document.getElementById('btn');
 const stop$ = fromEvent(btn, 'click');
 
-currentTime$
-  .pipe(
+const getEvenTimestamps = (stop$: Observable<any>) => {
+  return (source$: Observable<Date>) => source$.pipe(
     map(date => date.getTime()),
     filter(time => time % 2 === 0),
     takeUntil(stop$)
   )
+}
+
+currentTime$
+  .pipe(getEvenTimestamps(stop$))
   .subscribe({
     next: time => console.log(time),
     complete: () => console.log('DONE')
