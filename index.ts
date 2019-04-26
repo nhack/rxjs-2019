@@ -1,23 +1,16 @@
-import { Observable, Subscription, fromEvent } from 'rxjs';
-import { map, filter, takeUntil } from 'rxjs/operators';
-const currentTime$: Observable<Date> = new Observable(subscriber => {
-  setInterval(() => subscriber.next(new Date()), 1000);
-});
+import { interval } from 'rxjs';
+import { take } from 'rxjs/operators';
 
-const btn = document.getElementById('btn');
-const stop$ = fromEvent(btn, 'click');
+const source$ = interval(1000).pipe(take(4));
 
-const getEvenTimestamps = (stop$: Observable<any>) => {
-  return (source$: Observable<Date>) => source$.pipe(
-    map(date => date.getTime()),
-    filter(time => time % 2 === 0),
-    takeUntil(stop$)
-  )
-}
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
 
-currentTime$
-  .pipe(getEvenTimestamps(stop$))
-  .subscribe({
-    next: time => console.log(time),
-    complete: () => console.log('DONE')
-  });
+setTimeout(() => source$.subscribe(value => console.log(`Observer 2: ${value}`)), 1000);
+
+setTimeout(() => source$.subscribe(value => console.log(`Observer 3: ${value}`)), 2000);
+
+setTimeout(() => source$.subscribe(
+  value => console.log(`Observer 4: ${value}`),
+  null,
+  () => console.log('Observer 4 complete.')
+), 4500);
