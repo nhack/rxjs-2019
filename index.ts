@@ -1,6 +1,6 @@
-import {queueScheduler, asapScheduler, asyncScheduler, of, merge, from} from 'rxjs';
+import { queueScheduler, asapScheduler, asyncScheduler, of, merge, from } from 'rxjs';
 
-import {tap, observeOn} from 'rxjs/operators';
+import { tap, observeOn } from 'rxjs/operators';
 
 console.log('Start script.');
 
@@ -13,10 +13,12 @@ merge(queue$, asap$, async$)
     value => console.log(value)
   );
 
-from([1,2,3,4], queueScheduler).pipe(
-  tap(value => console.log(`Value: ${value}`)),
-  tap(value => console.log(`Doubled value: ${value * 2}`))
-)
-.subscribe();
+from([1, 2, 3, 4], queueScheduler)
+  .pipe(
+    tap(value => console.log(`Value: ${value}`)),
+    observeOn(asyncScheduler),
+    tap(value => console.log(`Doubled value: ${value * 2}`))
+  )
+  .subscribe();
 
 console.log('End script.');
