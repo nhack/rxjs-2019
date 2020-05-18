@@ -1,4 +1,4 @@
-import { Observable, Subscription, fromEvent } from 'rxjs';
+import { Observable, fromEvent } from 'rxjs';
 import { map, filter, takeUntil } from 'rxjs/operators';
 const currentTime$: Observable<Date> = new Observable(subscriber => {
   setInterval(() => subscriber.next(new Date()), 1000);
