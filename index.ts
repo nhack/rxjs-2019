@@ -5,7 +5,7 @@ import { PIZZAS } from './pizza/pizza.data';
 
 const pizzas$ = from(PIZZAS);
 
-// register the subscriber on the observable
+// register the observer on the observable
 pizzas$.subscribe({
   next: pizza => console.log(pizza.name),
   complete: () => console.log('subscrption is completed')
