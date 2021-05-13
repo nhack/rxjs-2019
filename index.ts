@@ -1,5 +1,5 @@
 
-import { Observable } from 'rxjs';
+import { Observable, OperatorFunction } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 const currentTime$: Observable<Date> = new Observable(subscriber => {
@@ -7,7 +7,7 @@ const currentTime$: Observable<Date> = new Observable(subscriber => {
 });
 
 const toTime = (date: Date) => date.getTime();
-const toTimeMap = map(toTime);
+const toTimeMap: OperatorFunction<Date, number> = map(toTime);
 
 toTimeMap(currentTime$).subscribe(time => console.log('Manual:' + time));
 currentTime$.pipe(toTimeMap).subscribe(time => console.log('Pipe:' + time));
