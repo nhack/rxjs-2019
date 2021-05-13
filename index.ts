@@ -1,19 +1,24 @@
-import { queueScheduler, asapScheduler, asyncScheduler, of, merge, from } from 'rxjs';
+import {
+  queueScheduler,
+  asapScheduler,
+  asyncScheduler,
+  of,
+  merge,
+  from,
+  scheduled
+} from 'rxjs';
 
 import { tap, observeOn } from 'rxjs/operators';
 
 console.log('Start script.');
 
-const queue$ = of('QueueScheduler (sync task)', queueScheduler);
-const asap$ = of('AsapScheduler (async micro task)', asapScheduler);
-const async$ = of('AsyncScheduler (async task)', asyncScheduler);
+const queue$ = scheduled(['QueueScheduler (sync task)'], queueScheduler);
+const asap$ = scheduled(['AsapScheduler (async micro task)'], asapScheduler);
+const async$ = scheduled(['AsyncScheduler (async task)'], asyncScheduler);
 
-merge(queue$, asap$, async$)
-  .subscribe(
-    value => console.log(value)
-  );
+merge(queue$, asap$, async$).subscribe(value => console.log(value));
 
-from([1, 2, 3, 4], queueScheduler)
+scheduled([1, 2, 3, 4], queueScheduler)
   .pipe(
     tap(value => console.log(`Value: ${value}`)),
     observeOn(asyncScheduler),
