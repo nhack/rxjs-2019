@@ -1,16 +1,14 @@
-import { Observable, Subscriber } from 'rxjs';
+import { interval } from "rxjs";
+import { take } from "rxjs/operators";
 
-import { IPizza } from './pizza/pizza.model';
-import { PIZZAS } from './pizza/pizza.data';
-
-// this method is called whit the first subscription
-const generator = (subscriber: Subscriber<IPizza>) => {
-  for (let pizza of PIZZAS) {
-    subscriber.next(pizza);
-  }
-}
-
-const pizzas$ = new Observable(generator);
-
-// register the observer on the observable
-pizzas$.subscribe({next: pizza => console.log(pizza.name)});
+const source$ = interval(1000).pipe(
+  take(4)
+);
+ 
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
+setTimeout(() => source$.subscribe(value => console.log(`Observer 2: ${value}`)), 1000);
+setTimeout(() => source$.subscribe(value => console.log(`Observer 3: ${value}`)), 2000);
+setTimeout(() => source$.subscribe({
+  next: value => console.log(`Observer 4: ${value}`),
+  complete: () => console.log('Observer 4 complete.')
+}), 4500);
