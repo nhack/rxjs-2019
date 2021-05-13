@@ -12,5 +12,5 @@ const generator = (subscriber: Subscriber<IPizza>) => {
 
 const pizzas$ = new Observable(generator);
 
-// register the subscriber on the observable
+// register the observer on the observable
 pizzas$.subscribe(pizza => console.log(pizza.name));
