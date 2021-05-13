@@ -9,8 +9,7 @@ source$.subscribe(subject$);
 subject$.subscribe(value => console.log(`Observer 1: ${value}`));
 setTimeout(() => subject$.subscribe(value => console.log(`Observer 2: ${value}`)), 1000);
 setTimeout(() => subject$.subscribe(value => console.log(`Observer 3: ${value}`)), 2000);
-setTimeout(() => subject$.subscribe(
-  value => console.log(`Observer 4: ${value}`),
-  null,
-  () => console.log('Observer 4 complete.')
-), 4500);
+setTimeout(() => subject$.subscribe({
+  next: value => console.log(`Observer 4: ${value}`),
+  complete: () => console.log('Observer 4 complete.')
+}), 4500);
