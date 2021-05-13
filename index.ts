@@ -1,4 +1,4 @@
-import {queueScheduler, asapScheduler, asyncScheduler, of, merge, from, scheduled} from 'rxjs';
+import {queueScheduler, asapScheduler, asyncScheduler, merge, from, scheduled} from 'rxjs';
 
 import {tap} from 'rxjs/operators';
 
