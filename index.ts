@@ -1,12 +1,12 @@
-import {queueScheduler, asapScheduler, asyncScheduler, of, merge, from} from 'rxjs';
+import {queueScheduler, asapScheduler, asyncScheduler, of, merge, from, scheduled} from 'rxjs';
 
 import {tap} from 'rxjs/operators';
 
 console.log('Start script.');
 
-const queue$ = of('QueueScheduler (sync task)', queueScheduler);
-const asap$ = of('AsapScheduler (async micro task)', asapScheduler);
-const async$ = of('AsyncScheduler (async task)', asyncScheduler);
+const queue$ = scheduled(['QueueScheduler (sync task)'], queueScheduler);
+const asap$ = scheduled(['AsapScheduler (async micro task)'], asapScheduler);
+const async$ = scheduled(['AsyncScheduler (async task)'], asyncScheduler);
 
 merge(queue$, asap$, async$)
   .subscribe(
